@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="md:w-1/2">
           <h4 className="text-xl font-semibold mb-4">About Our Project</h4>
           <p className="text-gray-400 leading-relaxed">
-            This project aims to enhance ocean literacy by using data from NASA's PACE satellite to map the distribution of algae and plankton in the oceans. It provides resources for teachers and students to better understand the marine ecosystem and promote environmental awareness.
+            This project aims to enhance ocean literacy by using data from NASA&apos;s PACE satellite to map the distribution of algae and plankton in the oceans. It provides resources for teachers and students to better understand the marine ecosystem and promote environmental awareness.
           </p>
         </div>
 
@@ -30,7 +30,7 @@ const Footer = () => {
       <div className="bg-gray-800 mt-10 py-4">
         <div className="container mx-auto text-center">
           <p className="text-gray-500 text-sm">
-            © {new Date().getFullYear()} Ocean Literacy Project. All Rights Reserved.
+            {/* © {new Date().getFullYear()} Ocean Literacy Project. All Rights Reserved. */}
           </p>
         </div>
       </div>

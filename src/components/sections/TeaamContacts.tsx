@@ -42,7 +42,7 @@ const TeamContacts = () => {
         <div className='text-center'>
           <h1 className='text-5xl font-bold mb-4 text-cyan-400'>Meet Our Team</h1>
           <p className='text-lg max-w-3xl mx-auto text-gray-300 leading-relaxed'>
-            This project uses data from NASA's PACE satellite to map the distribution of algae and plankton in the oceans. It aims to improve ocean literacy and provide resources for teachers and students worldwide. The PACE mission, launched in February 2024, offers detailed insights into marine ecosystems, such as the exchange of carbon dioxide between the atmosphere and the ocean and the growth of phytoplankton.
+            This project uses data from NASA&apos;s PACE satellite to map the distribution of algae and plankton in the oceans. It aims to improve ocean literacy and provide resources for teachers and students worldwide. The PACE mission, launched in February 2024, offers detailed insights into marine ecosystems, such as the exchange of carbon dioxide between the atmosphere and the ocean and the growth of phytoplankton.
           </p>
         </div>
 
@@ -62,10 +62,10 @@ const TeamContacts = () => {
                   {/* Ícones de Links */}
                   <div className="flex justify-center gap-4 mt-4">
                     <a href={contact.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300">
-                      <Github width="24" height="24" />
+                      <Github />
                     </a>
                     <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300">
-                      <Linkedin width="24" height="24" />
+                      <Linkedin />
                     </a>
                   </div>
                 </div>

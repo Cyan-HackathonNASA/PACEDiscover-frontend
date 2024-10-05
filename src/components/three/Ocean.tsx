@@ -7,16 +7,14 @@ import { Water } from 'three/examples/jsm/objects/Water.js';
 extend({ Water });
 
 const Ocean = () => {
-  const waterRef = useRef();
+  const waterRef = useRef<Water>(null);
 
-  // Carregar textura para o normal map da água
   const waterNormals = useLoader(
     THREE.TextureLoader,
     'https://raw.githubusercontent.com/mrdoob/three.js/master/examples/textures/waternormals.jpg'
   );
   waterNormals.wrapS = waterNormals.wrapT = THREE.RepeatWrapping;
 
-  // Configuração da geometria e parâmetros do plano de água
   const waterGeometry = useMemo(() => new THREE.PlaneGeometry(10000, 10000), []);
   const waterConfig = useMemo(
     () => ({
@@ -32,7 +30,6 @@ const Ocean = () => {
     [waterNormals]
   );
 
-  // Atualiza o tempo da água para criar o movimento
   useFrame((state, delta) => {
     if (waterRef.current) {
       waterRef.current.material.uniforms['time'].value += delta;
@@ -41,11 +38,8 @@ const Ocean = () => {
 
   return (
     <>
-      {/* Iluminação adicional para realçar o tom azulado */}
       <ambientLight intensity={0.6} color="#aad3e6" />
       <directionalLight position={[5, 10, -10]} intensity={1} color="#ffffff" />
-
-      {/* Plano de água */}
       <mesh>
         <water ref={waterRef} args={[waterGeometry, waterConfig]} rotation-x={-Math.PI / 2} position={[0, 0, 0]} />
       </mesh>

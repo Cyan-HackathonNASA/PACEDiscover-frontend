@@ -1,13 +1,14 @@
+// explorer-ocean/page.tsx
 'use client';
-import React, { Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Environment } from '@react-three/drei';
-import SceneOcean from '@/components/three/SceneOcean';
-import EarthScene from '@/components/three/EarthScene';
+import React from 'react';
+import dynamic from 'next/dynamic';
+
+// Importa o componente de forma dinâmica, desabilitando a renderização no lado do servidor
+const EarthScene = dynamic(() => import('@/components/three/EarthScene'), { ssr: false });
 
 export default function ExplorerOcean() {
   return (
-    <section className="h-screen">
+    <section className="">
       <EarthScene />
     </section>
   );
