@@ -59,166 +59,88 @@ const EarthScene = () => {
   spaceTexture.repeat.set(4, 4); // Define a quantidade de repetição horizontal e vertical
 
   return (
-    <>
-      <Canvas camera={{ position: [0, 0, 2.5], fov: 50 }}>
-        {/* Controles de órbita */}
-        <OrbitControls
-          enableZoom={true}
-          enablePan={false}
-          zoomSpeed={0.5}
-          minDistance={1.5}  // Limite mínimo de zoom (aproximação)
-          maxDistance={4.0} 
-        />
-
-        {/* Iluminação */}
-        <ambientLight intensity={0.8} />
-
-        <Environment files="./envs/hdri_nebula.hdr" background />
-        
-        {/* Planeta Terra com a textura atual */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1, 64, 64]} />
-          <meshStandardMaterial 
-            map={selectedTexture}              // Aplica a textura selecionada dinamicamente
-            emissive={new THREE.Color(0x00B1FF)} 
-            emissiveIntensity={0.9}            
-            emissiveMap={selectedTexture}       // Aplica a emissividade na textura
-            opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
-            transparent={true}                  // Permite transparência para controlar visibilidade
-          />
-          <Html center>
-            <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
-              Earth
-            </div>
-          </Html>
-        </mesh>
-
-        {/* Neon Glow em torno da Terra com emissividade */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1.04, 64, 64]} />
-          <meshPhysicalMaterial 
-            emissive={new THREE.Color(0x0099FF)} 
-            emissiveIntensity={4.5}              
-            clearcoat={1}                      
-            roughness={0}                      
-            transparent={true}
-            opacity={0.5}                      
-            side={THREE.BackSide}              
-          />
-        </mesh>
-
-        {/* Componente de Estrelas Oscilantes */}
-        <OscillatingStars />
-
-
-        {/* Background manual com textura repetida */}
-        <mesh>
-          <sphereGeometry args={[100, 64, 64]} />
-          <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
-        </mesh>
-
-        {/* Efeito de pós-processamento para brilho */}
-        <EffectComposer>
-          <Bloom 
-            intensity={3}            
-            luminanceThreshold={0.1}  
-            luminanceSmoothing={0.9}  
-            radius={1}                
-          />
-        </EffectComposer>
-      </Canvas>
-
-      {/* Botões laterais para alterar a textura */}
-      <div style={buttonContainerStyle}>
-        <button onClick={() => setSelectedTexture(dayTexture)} style={buttonStyle}>
-          Earth Day
-        </button>
-        <button onClick={() => setSelectedTexture(nightTexture)} style={buttonStyle}>
-          Earth Night
-        </button>
-        <button onClick={() => setSelectedTexture(cloudsTexture)} style={buttonStyle}>
-          Earth Clouds
-        </button>
+    <div style={{display: 'flex', flexDirection: 'row', height: '-webkit-fill-available', width: '-webkit-fill-available'}}>
+      <div style={{flex: 1, marginTop: '15vh'}}>
+        <p style={{...titleText, marginBottom: '5vh'}}>Satellite: PACE-OCI</p>
+        <p style={{...titleText, fontSize: 40}}>Filters:</p>
       </div>
+      <div style={{flex: 1}}>
+        <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+          {/* Controles de órbita */}
+          <OrbitControls
+            enableZoom={true}
+            enablePan={false}
+            zoomSpeed={0.5}
+            minDistance={1.5}  // Limite mínimo de zoom (aproximação)
+            maxDistance={6.0} 
+          />
 
-      {/* Select para alterar a textura conforme a seleção */}
-      <div style={selectContainerStyle}>
-        <select onChange={(e) => setSelectedTextureUrl(e.target.value)} style={selectStyle}>
-          <option value="">Select a Texture</option>
-          {textureLinks.map((link, index) => (
-            <option key={index} value={link.url}>
-              {link.name}
-            </option>
-          ))}
-        </select>
-      </div>
+          {/* Iluminação */}
+          <ambientLight intensity={0.8} />
 
-      {/* Controlador deslizante para alterar a visibilidade da textura */}
-      <div style={sliderContainerStyle}>
-        <label style={{ marginRight: '10px', color: 'white' }}>Texture Opacity:</label>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={selectedTextureOpacity}
-          onChange={(e) => setSelectedTextureOpacity(parseFloat(e.target.value))}
-          style={{ width: '300px' }}
-        />
+          <Environment files="./envs/hdri_nebula.hdr" background />
+          
+          {/* Planeta Terra com a textura atual */}
+          <mesh position={[0, 0, 0]}>
+            <sphereGeometry args={[1, 64, 64]} />
+            <meshStandardMaterial 
+              map={selectedTexture}              // Aplica a textura selecionada dinamicamente
+              emissive={new THREE.Color(0x00B1FF)} 
+              emissiveIntensity={0.9}            
+              emissiveMap={selectedTexture}       // Aplica a emissividade na textura
+              opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
+              transparent={true}                  // Permite transparência para controlar visibilidade
+            />
+            <Html center>
+              <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
+                Earth
+              </div>
+            </Html>
+          </mesh>
+
+          {/* Neon Glow em torno da Terra com emissividade */}
+          <mesh position={[0, 0, 0]}>
+            <sphereGeometry args={[1.04, 64, 64]} />
+            <meshPhysicalMaterial 
+              emissive={new THREE.Color(0x0099FF)} 
+              emissiveIntensity={4.5}              
+              clearcoat={1}                      
+              roughness={0}                      
+              transparent={true}
+              opacity={0.5}                      
+              side={THREE.BackSide}              
+            />
+          </mesh>
+
+          {/* Componente de Estrelas Oscilantes */}
+          <OscillatingStars />
+
+
+          {/* Background manual com textura repetida */}
+          <mesh>
+            <sphereGeometry args={[100, 64, 64]} />
+            <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
+          </mesh>
+
+          {/* Efeito de pós-processamento para brilho */}
+          <EffectComposer>
+            <Bloom 
+              intensity={3}            
+              luminanceThreshold={0.1}  
+              luminanceSmoothing={0.9}  
+              radius={1}                
+            />
+          </EffectComposer>
+        </Canvas>
       </div>
-    </>
+    </div>
   );
 };
 
-// Estilos dos botões
-const buttonContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  zIndex: 10
-};
-
-const buttonStyle = {
-  padding: '10px 20px',
-  fontSize: '16px',
-  cursor: 'pointer',
-  backgroundColor: '#00B1FF',
+const titleText = {
   color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  width: '150px'
-};
-
-// Estilos do seletor
-const selectContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  bottom: '60px',
-  zIndex: 10,
-};
-
-const selectStyle = {
-  padding: '10px',
-  fontSize: '16px',
-  backgroundColor: '#00B1FF',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  width: '300px',
-};
-
-// Estilos do controlador deslizante
-const sliderContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  bottom: '20px',
-  zIndex: 10,
-  display: 'flex',
-  alignItems: 'center'
-};
+  fontSize: 48,
+  fontWeight: 700,
+}
 
 export default EarthScene;
