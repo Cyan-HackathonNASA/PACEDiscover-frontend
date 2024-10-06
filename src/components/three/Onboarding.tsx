@@ -203,10 +203,6 @@ const Onboarding = () => {
           <OscillatingStars />
 
           {/* Background manual com textura repetida */}
-          <mesh>
-            <sphereGeometry args={[100, 64, 64]} />
-            <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
-          </mesh>
 
           {/* Efeito de pós-processamento para brilho */}
           <EffectComposer>
