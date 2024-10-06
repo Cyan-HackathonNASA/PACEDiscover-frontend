@@ -4,50 +4,20 @@ import { OrbitControls, Html, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import OscillatingStars from './OscillatingStars';
-import { useControls } from 'leva'
+import api from '@/app/api';
 
 const EarthScene = () => {
-  //
-
-  
-  // Texturas de exemplo (textura original)
-  const dayTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
-  const nightTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
-  const cloudsTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
-
-  // Texturas de seleção dinâmicas
-  const textureLinks = [
-    { name: 'Chlorophyll - August 2002', url: '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - September 2002', url: '/AQUA_MODIS.20020901_20020930.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - October 2002', url: '/AQUA_MODIS.20021001_20021031.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - November 2002', url: '/AQUA_MODIS.20021101_20021130.L3m.MO.CHL.chlor_a.4km.nc.png' }
-  ];
-
   // Estado para armazenar a textura dinâmica, começando com a textura original
-  const [selectedTexture, setSelectedTexture] = useState(dayTexture);
-  const [selectedTextureOpacity, setSelectedTextureOpacity] = useState(1.0); // Estado para controlar a opacidade
+  const [selectedTexture, setSelectedTexture] = useState(null);
 
-  // Estado para a URL da textura selecionada no select (inicia como vazio)
-  const [selectedTextureUrl, setSelectedTextureUrl] = useState('');
+  const getProducts = async () => {
+    const {data} = await api.get('/product')
+    console.log(data)
+  }
 
-  // Carregar a nova textura dinâmica quando o URL mudar, exceto no início
   useEffect(() => {
-    if (selectedTextureUrl) {
-      const loader = new THREE.TextureLoader();
-      loader.load(selectedTextureUrl, (texture) => {
-        setSelectedTexture(texture);
-      });
-    }
-  }, [selectedTextureUrl]);
+    getProducts()
+  }, [])
 
   // Textura de fundo para o espaço
   const spaceTexture = useLoader(
@@ -62,7 +32,16 @@ const EarthScene = () => {
     <div style={{display: 'flex', flexDirection: 'row', height: '-webkit-fill-available', width: '-webkit-fill-available'}}>
       <div style={{flex: 1, marginTop: '15vh'}}>
         <p style={{...titleText, marginBottom: '5vh'}}>Satellite: PACE-OCI</p>
-        <p style={{...titleText, fontSize: 40}}>Filters:</p>
+        <p style={{...titleText, fontSize: 40, marginBottom: '2vh'}}>Filters:</p>
+        <p style={labelText}>Data type:</p>
+        <select style={select}>
+          <option value={'Select'}>Select</option>
+        </select>
+        <div style={{marginTop: '1vh'}}></div>
+        <p style={labelText}>Period:</p>
+        <select style={select} value={'Select'}>
+          <option value={'Select'}>Select</option>
+        </select>
       </div>
       <div style={{flex: 1}}>
         <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
@@ -87,8 +66,7 @@ const EarthScene = () => {
               map={selectedTexture}              // Aplica a textura selecionada dinamicamente
               emissive={new THREE.Color(0x00B1FF)} 
               emissiveIntensity={0.9}            
-              emissiveMap={selectedTexture}       // Aplica a emissividade na textura
-              opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
+              emissiveMap={selectedTexture}       // Controla a opacidade dinâmica
               transparent={true}                  // Permite transparência para controlar visibilidade
             />
             <Html center>
@@ -141,6 +119,24 @@ const titleText = {
   color: 'white',
   fontSize: 48,
   fontWeight: 700,
+}
+
+const labelText = {
+  color: 'white',
+  fontSize: 28,
+  fontWeight: 400,
+  marginBottom: '1vh'
+}
+
+const select = {
+  backgroundColor: 'transparent',
+  color: 'white',
+  padding: 16,
+  width: 340,
+  height: 64,
+  borderWidth: 1,
+  borderColor: 'white',
+  fontSize: 20,
 }
 
 export default EarthScene;
