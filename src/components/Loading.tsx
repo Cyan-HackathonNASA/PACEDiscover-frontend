@@ -5,6 +5,17 @@ const Loading = () => {
     <div style={styles.wrapper}>
       <div style={styles.spinner}></div>
       <p style={styles.text}>Loading...</p>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 };
@@ -35,8 +46,5 @@ const styles: any = {
     animation: 'pulse 1.5s ease-in-out infinite',
   },
 };
-
-// Definir animações globalmente usando a tag <style>
-
 
 export default Loading;

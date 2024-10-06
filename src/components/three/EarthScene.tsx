@@ -15,6 +15,9 @@ const EarthScene = () => {
   const [month, setMonth] = useState<string|undefined>();
   const [selectedTexture, setSelectedTexture] = useState(null);
 
+
+  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+
   const getProducts = async () => {
     const {data} = await api.get('/product')
     setProducts(data)
@@ -39,14 +42,7 @@ const EarthScene = () => {
     }
   }, [selectedProduct, month])
 
-  // Textura de fundo para o espaço
-  const spaceTexture = useLoader(
-    THREE.TextureLoader,
-    '/hdri_test.jpg'
-  );
-  spaceTexture.wrapS = THREE.RepeatWrapping;
-  spaceTexture.wrapT = THREE.RepeatWrapping;
-  spaceTexture.repeat.set(4, 4); // Define a quantidade de repetição horizontal e vertical
+  // Configuração da textura de fundo
 
   return (
     <div style={{display: 'flex', flexDirection: 'row', height: '-webkit-fill-available', width: '-webkit-fill-available'}}>

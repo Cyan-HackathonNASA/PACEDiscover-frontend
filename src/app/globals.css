@@ -30,3 +30,13 @@ body {
 section {
   @apply lg:px-40
 }
+
+/* Defina o tamanho padrão para o painel Leva */
+.leva__root {
+  transform: scale(2.3);
+  width: 520px !important;
+}
+
+html {
+  scroll-behavior: smooth;
+}
