@@ -2,21 +2,20 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls, Html, Environment } from '@react-three/drei';
+import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import OscillatingStars from './OscillatingStars';
 import api from '@/app/api';
 
 const EarthScene = () => {
-  // Estado para armazenar a textura dinâmica, começando com a textura original
+  const defaultTexture = useLoader(THREE.TextureLoader, '/earth-default.jpg');
+  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState<string|undefined>();
   const [month, setMonth] = useState<string|undefined>();
-  const [selectedTexture, setSelectedTexture] = useState(null);
-
-
-  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+  const [selectedTexture, setSelectedTexture] = useState(defaultTexture);
 
   const getProducts = async () => {
     const {data} = await api.get('/product')
@@ -60,7 +59,6 @@ const EarthScene = () => {
         <p style={labelText}>Month:</p>
         <select onChange={(e) => setMonth(e.target.value)} style={select}>
           <option value={''}>Select</option>
-          <option value={'03'}>March</option>
           <option value={'04'}>April</option>
           <option value={'05'}>May</option>
           <option value={'06'}>June</option>
@@ -82,8 +80,6 @@ const EarthScene = () => {
 
           {/* Iluminação */}
           <ambientLight intensity={0.8} />
-
-          <Environment files="./envs/hdri_nebula.hdr" background />
           
           {/* Planeta Terra com a textura atual */}
           <mesh position={[0, 0, 0]}>
@@ -122,7 +118,6 @@ const EarthScene = () => {
 
           {/* Background manual com textura repetida */}
           <mesh>
-            <sphereGeometry args={[100, 64, 64]} />
             <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
           </mesh>
 
