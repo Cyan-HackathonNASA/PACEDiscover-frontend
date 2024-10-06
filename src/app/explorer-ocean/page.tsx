@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 import Loading from '@/components/Loading';
 
 // Importa o componente EarthScene de forma dinâmica, desativando o SSR
-const EarthScene = dynamic(() => import('@/components/three/EarthScene'), { ssr: false, loading: () => <Loading /> });
+// const EarthScene = dynamic(() => import('@/components/three/EarthScene'), { ssr: false, loading: () => <Loading /> });
 
 export default function ExplorerOcean() {
   // Estado para controlar a renderização da cena 3D
@@ -40,7 +40,7 @@ export default function ExplorerOcean() {
         {/* Carregar a experiência 3D apenas após o clique */}
         {show3D && (
           <div className='lg:w-1/2 w-full h-screen lg:h-auto z-50 mt-10 lg:mt-0'>
-            <EarthScene />
+            {/* <EarthScene /> */}
           </div>
         )}
       </div>
