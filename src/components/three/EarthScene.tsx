@@ -90,7 +90,7 @@ const EarthScene = () => {
 
             {/* Planeta Terra com a textura selecionada */}
             <mesh position={[0, 0, 0]} onPointerOver={() => setHovered(true)} onPointerOut={() => setHovered(false)}>
-              <sphereGeometry args={[1, 64, 64]} />
+              <sphereGeometry args={[1, 32, 32]} />
               <meshStandardMaterial
                 map={selectedTexture}
                 emissive={hovered ? new THREE.Color(0xff8800) : new THREE.Color(0x00B1FF)}
