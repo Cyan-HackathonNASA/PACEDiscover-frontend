@@ -20,7 +20,8 @@ const Loading = () => {
   );
 };
 
-const styles = {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const styles: any = {
   wrapper: {
     display: 'flex',
     flexDirection: 'column',

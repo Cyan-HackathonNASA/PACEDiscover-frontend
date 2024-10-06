@@ -1,7 +1,7 @@
 // Código do componente Hero
 const Explore = () => {
   return (
-    <section id='about' className='min-h-screen flex flex-col items-center justify-center'>
+    <section id='explore' className='min-h-screen flex flex-col items-center justify-center'>
       <div className='flex flex-col gap-12 text-white'>
         <div>
           <h1 className='text-4xl font-semibold'>Explore the Ocean</h1>
