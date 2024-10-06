@@ -12,9 +12,9 @@ const About = () => {
         <div>
           <h3>See more</h3>
           <div className='flex justify-between gap-2'>
-            <a className="underline" href="#">NASA Space Apps Challenge</a>
-            <a className="underline" href="#">Ocean Color</a>
-            <a className="underline" href="#">Community of Practice</a>
+            <a className="underline" href="https://www.spaceappschallenge.org/">NASA Space Apps Challenge</a>
+            <a className="underline" href="https://oceancolor.gsfc.nasa.gov/l3/">Ocean Color</a>
+            <a className="underline" href="https://pace.oceansciences.org/learn_documents.htm">Documents</a>
           </div>
         </div>
       </div>
