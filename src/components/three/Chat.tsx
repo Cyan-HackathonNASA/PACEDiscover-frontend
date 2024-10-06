@@ -1,29 +1,81 @@
-import React from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import api from '@/app/api';
+import Image from 'next/image';
+import React, { useState } from 'react';
+import uuid from 'react-uuid';
 
 const ChatLayout = () => {
+  const [isChatModalOpen, setIsChatModalOpen] = useState(false);
+
+  const handleChatIconClick = () => {
+    setIsChatModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsChatModalOpen(false);
+  };
+  
+  const [text, setText] = useState<string>('');
+  const [loading, setLoading] = useState(false);
+  const [messages, setMessages] = useState<{text: string, isResponse: boolean}[]>([]);
+  
+  const chatId = uuid()
+
+  const postMessage = async () => {
+    setText('')
+    setMessages((state) => ([...state, {text: text, isResponse: false}]))
+    setLoading(true);
+    try {
+      const {data} = await api.post('/chat/', { 
+        chat_uuid: chatId,
+        message: text
+      })
+      setMessages((state) => ([...state, {text: data.response, isResponse: true}]))
+      setLoading(false)
+    } catch {
+      throw new Error('Error, try again.')
+    }
+  }
+    
+
   return (
-    <div style={containerStyle}>
-      <div style={headerStyle}>
-        <h2>Hello human!</h2>
-        <h3>I can help you better understand PACE-OCI.</h3>
+    <>
+      <div className="fixed bottom-5 left-5 cursor-pointer" onClick={handleChatIconClick}>
+        <Image src="/icons/chat.svg" alt="Chat Icon" width={50} height={50} />
       </div>
-      <div style={chatBoxContainerStyle}>
-        <div style={chatBoxChatStyle}>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et semper justo, a luctus est. Nam feugiat euismod risus. Nullam ut quam sit amet dui molestie pretium.</p>
+      {isChatModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-90">
+          <div className="bg-black p-5 rounded-md max-w-md w-full relative">
+            <button className="absolute top-2 right-2 text-white bg-red-500 p-2 rounded" onClick={handleCloseModal}>
+              Exit
+            </button>
+            <div className="flex justify-center">
+              <div style={containerStyle}>
+                <div style={headerStyle}>
+                  <h2>Hello human!</h2>
+                  <h3>I can help you better understand PACE-OCI.</h3>
+                </div>
+                <div style={chatBoxContainerStyle}>
+                  {messages.map((message, index) => (
+                    <div key={index} style={message.isResponse ? chatBoxChatStyle : chatBoxPersonStyle}>
+                      <p>{message.text}</p>
+                    </div>
+                  ))}
+                </div>
+                <div style={inputContainerStyle}>
+                  <input onKeyDown={(e) => e.key === 'Enter' && postMessage()} disabled={loading} type="text" placeholder="Ask to PACE I.A..." style={inputStyle} value={text} onChange={(e) => setText(e.target.value)} />
+                  <button onClick={postMessage} style={buttonStyle}>Send</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div style={chatBoxPersonStyle}>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla et semper justo, a luctus est. Nam feugiat euismod risus. Nullam ut quam sit amet dui molestie pretium.</p>
-        </div>
-      </div>
-      <div style={inputContainerStyle}>
-        <input type="text" placeholder="Ask to PACE I.A..." style={inputStyle} />
-        <button style={buttonStyle}>Enviar</button>
-      </div>
-    </div>
+      )}
+    </>
   );
 };
 
-const containerStyle = {
+const containerStyle: any = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -35,11 +87,11 @@ const containerStyle = {
   padding: '20px'
 };
 
-const headerStyle = {
+const headerStyle: any = {
   textAlign: 'center'
 };
 
-const chatBoxContainerStyle = {
+const chatBoxContainerStyle: any = {
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
@@ -48,7 +100,7 @@ const chatBoxContainerStyle = {
   width: '100%'
 };
 
-const chatBoxChatStyle = {
+const chatBoxChatStyle: any = {
   backgroundColor: '#222',
   borderRadius: '10px',
   padding: '20px',
@@ -57,7 +109,7 @@ const chatBoxChatStyle = {
   textAlign: 'left'
 };
 
-const chatBoxPersonStyle = {
+const chatBoxPersonStyle: any = {
   backgroundColor: '#555',
   borderRadius: '10px',
   padding: '20px',
