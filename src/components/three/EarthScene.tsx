@@ -26,10 +26,10 @@ const EarthScene = () => {
 
   useEffect(() => {
     const getTexture = async () => {
-      const {data} = await api.get(`/image_url/?product=${selectedProduct}&year=2024&month=${month}&res=4km&period=monthly`)
+      const {data} = await api.get(`/image/?product=${selectedProduct}&year=2024&month=${month}&res=4km&period=monthly`)
       const loader = new THREE.TextureLoader();
       loader.load(
-        data.url,
+        `data:image/png;base64, ${data.image_base64}`,
         (texture: any) => {
           setSelectedTexture(texture)
         })
