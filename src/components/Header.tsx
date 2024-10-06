@@ -9,8 +9,8 @@ const Header = () => {
   const listLinks = [
     { label: 'Home', url: '/' },
     { label: 'Explore', url: '/explorer-ocean' },
+    { label: 'Learn about PACE', url: '/see-onboarding' },
     { label: 'Quiz PACE', url: '/quiz-pace' },
-    { label: 'Onboarding', url: '/see-onboarding' },
     { label: 'About the project', url: '/#about' },
     { label: 'Team Contacts', url: '/#team-contacts' },
   ];

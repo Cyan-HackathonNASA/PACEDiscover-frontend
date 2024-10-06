@@ -91,11 +91,6 @@ const EarthScene = () => {
               emissiveMap={selectedTexture}       // Controla a opacidade dinâmica
               transparent={true}                  // Permite transparência para controlar visibilidade
             />
-            <Html center>
-              <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
-                Earth
-              </div>
-            </Html>
           </mesh>
 
           {/* Neon Glow em torno da Terra com emissividade */}
