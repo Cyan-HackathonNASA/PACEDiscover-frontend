@@ -152,7 +152,7 @@ const Onboarding = () => {
           </div>
         </div>
       </div>
-      <div style={{ flex: 1 }}>
+      <div className='w-full' style={{ flex: 1 }}>
         <Canvas camera={{ position: [0, 0, 6], fov: 40 }}>
           {/* Controles de órbita */}
           <OrbitControls
@@ -166,7 +166,8 @@ const Onboarding = () => {
           {/* Iluminação */}
           <ambientLight intensity={0.8} />
 
-          <Environment files="./envs/hdri_nebula.hdr" background />
+
+          {/* <Environment files="./envs/hdri_nebula.hdr" background /> */}
           
           {/* Planeta Terra com a textura atual */}
           <mesh position={[0, 0, 0]}>
@@ -187,14 +188,14 @@ const Onboarding = () => {
 
           {/* Neon Glow em torno da Terra com emissividade */}
           <mesh position={[0, 0, 0]}>
-            <sphereGeometry args={[1.04, 64, 64]} />
+            <sphereGeometry args={[1.06, 64, 64]} />
             <meshPhysicalMaterial
-              emissive={new THREE.Color(0x0099FF)}
+              emissive={new THREE.Color(0x0077FF)}
               emissiveIntensity={4.5}              
               clearcoat={1}                      
               roughness={0}                      
               transparent={true}
-              opacity={0.5}                      
+              opacity={0.01}                      
               side={THREE.BackSide}              
             />
           </mesh>
