@@ -1,6 +1,4 @@
-import SceneOcean from './three/SceneOcean';
-
-// Código do componente Hero
+/* eslint-disable react/no-unescaped-entities */
 const About = () => {
   return (
     <section id='about' className='min-h-screen flex flex-col items-center justify-center'>

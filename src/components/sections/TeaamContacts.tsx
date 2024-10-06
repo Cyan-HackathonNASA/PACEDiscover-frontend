@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { Github } from "../icons/Github";
 import { Linkedin } from "../icons/Linkedin";
 
@@ -62,7 +63,7 @@ const TeamContacts = () => {
                   {/* Ícones de Links */}
                   <div className="flex justify-center gap-4 mt-4">
                     <a href={contact.github} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300">
-                      <Github width="24" height="24" />
+                      <Github />
                     </a>
                     <a href={contact.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-white transition-all duration-300">
                       <Linkedin width="24" height="24" />

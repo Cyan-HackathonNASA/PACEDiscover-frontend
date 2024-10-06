@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, Html, Environment } from '@react-three/drei';
 import * as THREE from 'three';
@@ -8,7 +8,7 @@ import api from '@/app/api';
 
 const EarthScene = () => {
   // Estado para armazenar a textura dinâmica, começando com a textura original
-  const [selectedTexture, setSelectedTexture] = useState(null);
+  const [selectedTexture, ] = useState(null);
 
   const getProducts = async () => {
     const {data} = await api.get('/product')
