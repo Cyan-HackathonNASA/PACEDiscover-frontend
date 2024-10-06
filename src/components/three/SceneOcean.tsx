@@ -13,6 +13,7 @@ const SceneOcean = () => {
         
         {/* Controles de órbita para navegação */}
         <OrbitControls 
+          enableZoom={false}
           maxPolarAngle={Math.PI / 2.3}  // Limita o controle de órbita para evitar que olhe para baixo do horizonte
           minPolarAngle={Math.PI / 3.5}  // Ajuste de ângulo para reforçar a visão de mar aberto
           target={[0, 20, 0]}  // Define o ponto focal para dar mais ênfase no horizonte
