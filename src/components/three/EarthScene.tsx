@@ -9,14 +9,13 @@ import OscillatingStars from './OscillatingStars';
 import api from '@/app/api';
 
 const EarthScene = () => {
-  // Estado para armazenar a textura dinâmica, começando com a textura original
+  const defaultTexture = useLoader(THREE.TextureLoader, '/earth-default.jpg');
+  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+
   const [products, setProducts] = useState([]);
   const [selectedProduct, setSelectedProduct] = useState<string|undefined>();
   const [month, setMonth] = useState<string|undefined>();
-  const [selectedTexture, setSelectedTexture] = useState(null);
-
-
-  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+  const [selectedTexture, setSelectedTexture] = useState(defaultTexture);
 
   const getProducts = async () => {
     const {data} = await api.get('/product')
@@ -122,7 +121,6 @@ const EarthScene = () => {
 
           {/* Background manual com textura repetida */}
           <mesh>
-            <sphereGeometry args={[100, 64, 64]} />
             <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
           </mesh>
 
