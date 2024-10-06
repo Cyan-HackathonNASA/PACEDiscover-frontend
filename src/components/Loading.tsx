@@ -2,7 +2,7 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <div style={styles.wrapper}>
+    <div>
       <div style={styles.spinner}></div>
       <p style={styles.text}>Loading...</p>
     </div>

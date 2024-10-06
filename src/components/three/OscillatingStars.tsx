@@ -1,16 +1,17 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { useFrame, extend, useThree } from '@react-three/fiber';
+import { useFrame, useThree } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const OscillatingStars = () => {
-  const starsRef = useRef();
+  // Tipar `starsRef` corretamente como `THREE.Points` para evitar erros
+  const starsRef = useRef<THREE.Points<THREE.BufferGeometry, THREE.ShaderMaterial> | null>(null);
   const [starsLoaded, setStarsLoaded] = useState(false);
   const { camera } = useThree(); // Obter a câmera atual para acessar sua posição
 
   useEffect(() => {
     // Configuração da geometria e do material das estrelas
     const starsGeometry = new THREE.BufferGeometry();
-    const starCount = 10000; // Quantidade de estrelas
+    const starCount = 2000; // Quantidade de estrelas
     const starPositions = new Float32Array(starCount * 3); // Array para armazenar posições (5000 estrelas * 3 coordenadas)
     const starSizes = new Float32Array(starCount); // Array para armazenar tamanhos individuais
 

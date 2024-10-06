@@ -1,224 +1,140 @@
-import React, { useState, useEffect, Suspense } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, Html, Environment } from '@react-three/drei';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
-import OscillatingStars from './OscillatingStars';
-import { useControls } from 'leva'
+import { useControls, folder, Leva } from 'leva';
 
 const EarthScene = () => {
-  //
+  // Usar estado para detectar o lado do cliente
+  const [isClient, setIsClient] = useState(false);
 
-  
-  // Texturas de exemplo (textura original)
-  const dayTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
-  const nightTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
-  const cloudsTexture = useLoader(
-    THREE.TextureLoader,
-    '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png'
-  );
+  // Atualiza o estado para `true` após a montagem do componente
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
-  // Texturas de seleção dinâmicas
+  // Carregar texturas usando `useLoader` para que sejam chamadas em todas as renderizações
+  const dayTexture = useLoader(THREE.TextureLoader, '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png');
+  const nightTexture = useLoader(THREE.TextureLoader, '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png');
+  const cloudsTexture = useLoader(THREE.TextureLoader, '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png');
+  const spaceTexture = useLoader(THREE.TextureLoader, '/hdri_test.jpg');
+
+  // Texturas dinâmicas
   const textureLinks = [
-    { name: 'Chlorophyll - August 2002', url: '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - September 2002', url: '/AQUA_MODIS.20020901_20020930.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - October 2002', url: '/AQUA_MODIS.20021001_20021031.L3m.MO.CHL.chlor_a.4km.nc.png' },
-    { name: 'Chlorophyll - November 2002', url: '/AQUA_MODIS.20021101_20021130.L3m.MO.CHL.chlor_a.4km.nc.png' }
+    { label: 'Chlorophyll - August 2002', value: '/AQUA_MODIS.20020801_20020831.L3m.MO.CHL.chlor_a.4km.nc.png' },
+    { label: 'Chlorophyll - September 2002', value: '/AQUA_MODIS.20020901_20020930.L3m.MO.CHL.chlor_a.4km.nc.png' },
+    { label: 'Chlorophyll - October 2002', value: '/AQUA_MODIS.20021001_20021031.L3m.MO.CHL.chlor_a.4km.nc.png' },
+    { label: 'Chlorophyll - November 2002', value: '/AQUA_MODIS.20021101_20021130.L3m.MO.CHL.chlor_a.4km.nc.png' },
   ];
 
-  // Estado para armazenar a textura dinâmica, começando com a textura original
+  // Controles do Leva (sempre chamados, mas com condicional no valor de `options`)
+  const { selectedTextureUrl, textureOpacity } = useControls({
+    Textures: folder({
+      selectedTextureUrl: {
+        label: 'Select Texture',
+        options: isClient
+          ? {
+              'Earth Day': dayTexture,
+              'Earth Night': nightTexture,
+              'Earth Clouds': cloudsTexture,
+              ...textureLinks.reduce((acc, link) => ({ ...acc, [link.label]: link.value }), {}),
+            }
+          : {}, // Opções vazias no lado do servidor
+      },
+      textureOpacity: { value: 1.0, min: 0, max: 1, step: 0.01, label: 'Texture Opacity' },
+    }),
+  });
+
+  // Estado para a textura selecionada e atualização dinâmica
   const [selectedTexture, setSelectedTexture] = useState(dayTexture);
-  const [selectedTextureOpacity, setSelectedTextureOpacity] = useState(1.0); // Estado para controlar a opacidade
+  const [hovered, setHovered] = useState(false);
 
-  // Estado para a URL da textura selecionada no select (inicia como vazio)
-  const [selectedTextureUrl, setSelectedTextureUrl] = useState('');
-
-  // Carregar a nova textura dinâmica quando o URL mudar, exceto no início
+  // Atualiza a textura quando `selectedTextureUrl` muda (também no lado do cliente)
   useEffect(() => {
-    if (selectedTextureUrl) {
+    if (isClient && typeof selectedTextureUrl === 'string') {
       const loader = new THREE.TextureLoader();
       loader.load(selectedTextureUrl, (texture) => {
         setSelectedTexture(texture);
       });
     }
-  }, [selectedTextureUrl]);
+  }, [selectedTextureUrl, isClient]);
 
-  // Textura de fundo para o espaço
-  const spaceTexture = useLoader(
-    THREE.TextureLoader,
-    '/hdri_test.jpg'
-  );
-  spaceTexture.wrapS = THREE.RepeatWrapping;
-  spaceTexture.wrapT = THREE.RepeatWrapping;
-  spaceTexture.repeat.set(4, 4); // Define a quantidade de repetição horizontal e vertical
+  // Configuração da textura de fundo
+  useEffect(() => {
+    if (spaceTexture) {
+      spaceTexture.wrapS = THREE.RepeatWrapping;
+      spaceTexture.wrapT = THREE.RepeatWrapping;
+      spaceTexture.repeat.set(4, 4); // Define a repetição horizontal e vertical da textura
+    }
+  }, [spaceTexture]);
 
   return (
-    <>
-      <Canvas camera={{ position: [0, 0, 2.5], fov: 50 }}>
-        {/* Controles de órbita */}
-        <OrbitControls
-          enableZoom={true}
-          enablePan={false}
-          zoomSpeed={0.5}
-          minDistance={1.5}  // Limite mínimo de zoom (aproximação)
-          maxDistance={4.0} 
-        />
-
-        {/* Iluminação */}
-        <ambientLight intensity={0.8} />
-
-        <Environment files="./envs/hdri_nebula.hdr" background />
-        
-        {/* Planeta Terra com a textura atual */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1, 64, 64]} />
-          <meshStandardMaterial 
-            map={selectedTexture}              // Aplica a textura selecionada dinamicamente
-            emissive={new THREE.Color(0x00B1FF)} 
-            emissiveIntensity={0.9}            
-            emissiveMap={selectedTexture}       // Aplica a emissividade na textura
-            opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
-            transparent={true}                  // Permite transparência para controlar visibilidade
-          />
-          <Html center>
-            <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
-              Earth
-            </div>
-          </Html>
-        </mesh>
-
-        {/* Neon Glow em torno da Terra com emissividade */}
-        <mesh position={[0, 0, 0]}>
-          <sphereGeometry args={[1.04, 64, 64]} />
-          <meshPhysicalMaterial 
-            emissive={new THREE.Color(0x0099FF)} 
-            emissiveIntensity={4.5}              
-            clearcoat={1}                      
-            roughness={0}                      
-            transparent={true}
-            opacity={0.5}                      
-            side={THREE.BackSide}              
-          />
-        </mesh>
-
-        {/* Componente de Estrelas Oscilantes */}
-        <OscillatingStars />
-
-
-        {/* Background manual com textura repetida */}
-        <mesh>
-          <sphereGeometry args={[100, 64, 64]} />
-          <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
-        </mesh>
-
-        {/* Efeito de pós-processamento para brilho */}
-        <EffectComposer>
-          <Bloom 
-            intensity={3}            
-            luminanceThreshold={0.1}  
-            luminanceSmoothing={0.9}  
-            radius={1}                
-          />
-        </EffectComposer>
-      </Canvas>
-
-      {/* Botões laterais para alterar a textura */}
-      <div style={buttonContainerStyle}>
-        <button onClick={() => setSelectedTexture(dayTexture)} style={buttonStyle}>
-          Earth Day
-        </button>
-        <button onClick={() => setSelectedTexture(nightTexture)} style={buttonStyle}>
-          Earth Night
-        </button>
-        <button onClick={() => setSelectedTexture(cloudsTexture)} style={buttonStyle}>
-          Earth Clouds
-        </button>
+    <div className='flex w-full h-screen'>
+      {/* Painel de Controle Leva no lado esquerdo */}
+      <div className='absolute left-12 top-12 lg:left-20 lg:top-20 p-4 z-50'>
+        <Leva fill />
       </div>
 
-      {/* Select para alterar a textura conforme a seleção */}
-      <div style={selectContainerStyle}>
-        <select onChange={(e) => setSelectedTextureUrl(e.target.value)} style={selectStyle}>
-          <option value="">Select a Texture</option>
-          {textureLinks.map((link, index) => (
-            <option key={index} value={link.url}>
-              {link.name}
-            </option>
-          ))}
-        </select>
-      </div>
+      {/* Canvas de Visualização 3D no lado direito */}
+      <div className='w-full h-full'>
+        {isClient && ( // Renderiza o Canvas apenas no cliente
+          <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+            {/* Componente de câmera e controles */}
+            <OrbitControls enableZoom={true} enablePan={false} zoomSpeed={0.5} minDistance={0.5} maxDistance={4.0} />
 
-      {/* Controlador deslizante para alterar a visibilidade da textura */}
-      <div style={sliderContainerStyle}>
-        <label style={{ marginRight: '10px', color: 'white' }}>Texture Opacity:</label>
-        <input
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value={selectedTextureOpacity}
-          onChange={(e) => setSelectedTextureOpacity(parseFloat(e.target.value))}
-          style={{ width: '300px' }}
-        />
+            {/* Iluminação e ambiente */}
+            <ambientLight intensity={0.8} />
+            <Environment files="./envs/hdri_nebula.hdr" background />
+
+            {/* Planeta Terra com a textura selecionada */}
+            <mesh position={[0, 0, 0]} onPointerOver={() => setHovered(true)} onPointerOut={() => setHovered(false)}>
+              <sphereGeometry args={[1, 64, 64]} />
+              <meshStandardMaterial
+                map={selectedTexture}
+                emissive={hovered ? new THREE.Color(0xff8800) : new THREE.Color(0x00B1FF)}
+                emissiveIntensity={0.9}
+                emissiveMap={selectedTexture}
+                opacity={textureOpacity}
+                transparent={true}
+              />
+              <Html center>
+                <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
+                  Earth
+                </div>
+              </Html>
+            </mesh>
+
+            {/* Neon Glow ao redor da Terra */}
+            <mesh position={[0, 0, 0]}>
+              <sphereGeometry args={[1.04, 64, 64]} />
+              <meshPhysicalMaterial
+                emissive={hovered ? new THREE.Color(0xff8800) : new THREE.Color(0x0099FF)}
+                emissiveIntensity={4.5}
+                clearcoat={1}
+                roughness={0}
+                transparent={true}
+                opacity={0.5}
+                side={THREE.BackSide}
+              />
+            </mesh>
+
+            {/* Background manual com a textura repetida */}
+            <mesh>
+              <sphereGeometry args={[100, 64, 64]} />
+              <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
+            </mesh>
+
+            {/* Efeito de pós-processamento para brilho */}
+            <EffectComposer>
+              <Bloom intensity={3} luminanceThreshold={0.1} luminanceSmoothing={0.9} radius={1} />
+            </EffectComposer>
+          </Canvas>
+        )}
       </div>
-    </>
+    </div>
   );
-};
-
-// Estilos dos botões
-const buttonContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  top: '50%',
-  transform: 'translateY(-50%)',
-  display: 'flex',
-  flexDirection: 'column',
-  gap: '10px',
-  zIndex: 10
-};
-
-const buttonStyle = {
-  padding: '10px 20px',
-  fontSize: '16px',
-  cursor: 'pointer',
-  backgroundColor: '#00B1FF',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  width: '150px'
-};
-
-// Estilos do seletor
-const selectContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  bottom: '60px',
-  zIndex: 10,
-};
-
-const selectStyle = {
-  padding: '10px',
-  fontSize: '16px',
-  backgroundColor: '#00B1FF',
-  color: 'white',
-  border: 'none',
-  borderRadius: '5px',
-  width: '300px',
-};
-
-// Estilos do controlador deslizante
-const sliderContainerStyle = {
-  position: 'absolute',
-  right: '20px',
-  bottom: '20px',
-  zIndex: 10,
-  display: 'flex',
-  alignItems: 'center'
 };
 
 export default EarthScene;
