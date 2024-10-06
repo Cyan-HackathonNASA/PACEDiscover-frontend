@@ -18,7 +18,7 @@ const EarthScene = () => {
   const [selectedTexture, setSelectedTexture] = useState(defaultTexture);
 
   const getProducts = async () => {
-    const {data} = await api.get('/product')
+    const {data} = await api.get('/product/')
     setProducts(data)
   }
 
