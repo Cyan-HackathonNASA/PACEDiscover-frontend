@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+"use client";
 import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
 import { OrbitControls, Html, Environment } from '@react-three/drei';
@@ -8,16 +10,34 @@ import api from '@/app/api';
 
 const EarthScene = () => {
   // Estado para armazenar a textura dinâmica, começando com a textura original
-  const [selectedTexture, ] = useState(null);
+  const [products, setProducts] = useState([]);
+  const [selectedProduct, setSelectedProduct] = useState<string|undefined>();
+  const [month, setMonth] = useState<string|undefined>();
+  const [selectedTexture, setSelectedTexture] = useState(null);
 
   const getProducts = async () => {
     const {data} = await api.get('/product')
-    console.log(data)
+    setProducts(data)
   }
 
   useEffect(() => {
     getProducts()
   }, [])
+
+  useEffect(() => {
+    const getTexture = async () => {
+      const {data} = await api.get(`/image_url/?product=${selectedProduct}&year=2024&month=${month}&res=4km&period=monthly`)
+      const loader = new THREE.TextureLoader();
+      loader.load(
+        data.url,
+        (texture: any) => {
+          setSelectedTexture(texture)
+        })
+    }
+    if (selectedProduct && month) {
+      getTexture()
+    }
+  }, [selectedProduct, month])
 
   // Textura de fundo para o espaço
   const spaceTexture = useLoader(
@@ -34,13 +54,23 @@ const EarthScene = () => {
         <p style={{...titleText, marginBottom: '5vh'}}>Satellite: PACE-OCI</p>
         <p style={{...titleText, fontSize: 40, marginBottom: '2vh'}}>Filters:</p>
         <p style={labelText}>Data type:</p>
-        <select style={select}>
-          <option value={'Select'}>Select</option>
+        <select onChange={(e) => setSelectedProduct(e.target.value)} style={select}>
+          <option value={''}>Select</option>
+          {products.map((product: any) => (
+            <option key={product.id} value={product.id}>{product.name}</option>
+          ))}
         </select>
         <div style={{marginTop: '1vh'}}></div>
-        <p style={labelText}>Period:</p>
-        <select style={select} value={'Select'}>
-          <option value={'Select'}>Select</option>
+        <p style={labelText}>Month:</p>
+        <select onChange={(e) => setMonth(e.target.value)} style={select}>
+          <option value={''}>Select</option>
+          <option value={'03'}>March</option>
+          <option value={'04'}>April</option>
+          <option value={'05'}>May</option>
+          <option value={'06'}>June</option>
+          <option value={'07'}>July</option>
+          <option value={'08'}>August</option>
+          <option value={'09'}>September</option>
         </select>
       </div>
       <div style={{flex: 1}}>
