@@ -175,7 +175,7 @@ const Onboarding = () => {
             <meshStandardMaterial
               map={selectedTexture}              // Aplica a textura selecionada dinamicamente
               emissive={new THREE.Color(0x00B1FF)}
-              emissiveIntensity={0.9}            
+              emissiveIntensity={0.2}            
               emissiveMap={selectedTexture}       // Aplica a emissividade na textura
               opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
               transparent={true}                  // Permite transparência para controlar visibilidade

@@ -44,31 +44,35 @@ const EarthScene = () => {
   // Configuração da textura de fundo
 
   return (
-    <div style={{display: 'flex', flexDirection: 'row', height: '-webkit-fill-available', width: '-webkit-fill-available'}}>
-      <div style={{flex: 1, marginTop: '15vh'}}>
-        <p style={{...titleText, marginBottom: '5vh'}}>Satellite: PACE-OCI</p>
-        <p style={{...titleText, fontSize: 40, marginBottom: '2vh'}}>Filters:</p>
-        <p style={labelText}>Data type:</p>
-        <select onChange={(e) => setSelectedProduct(e.target.value)} style={select}>
-          <option value={''}>Select</option>
-          {products.map((product: any) => (
-            <option key={product.id} value={product.id}>{product.name}</option>
-          ))}
-        </select>
+    <div className='flex flex-col items-center lg:flex-row min-h-screen lg:gap-10'>
+      <div className='z-20 text-white w-full lg:w-2/3 ml-12 lg:mb-40'>
+        <h1 className='text-4xl font-semibold select-none'>Satellite: PACE-OCI</h1>
+        <div className='flex flex-col gap-2 select-none'>
+          <p className='text-xl font-light'>Filters:</p>
+          <label htmlFor="dataType">Data type:</label>
+          <select id='dataType' onChange={(e) => setSelectedProduct(e.target.value)}>
+            <option value={''}>Select</option>
+            {products.map((product: any) => (
+              <option key={product.id} value={product.id}>{product.name}</option>
+            ))}
+          </select>
+        </div>
         <div style={{marginTop: '1vh'}}></div>
-        <p style={labelText}>Month:</p>
-        <select onChange={(e) => setMonth(e.target.value)} style={select}>
-          <option value={''}>Select</option>
-          <option value={'03'}>March</option>
-          <option value={'04'}>April</option>
-          <option value={'05'}>May</option>
-          <option value={'06'}>June</option>
-          <option value={'07'}>July</option>
-          <option value={'08'}>August</option>
-          <option value={'09'}>September</option>
-        </select>
+        <div className='flex flex-col gap-2 select-none'>
+          <label htmlFor="dataMonth">Month:</label>
+          <select id="dataMonth" onChange={(e) => setMonth(e.target.value)} >
+            <option value={''}>Select</option>
+            <option value={'03'}>March</option>
+            <option value={'04'}>April</option>
+            <option value={'05'}>May</option>
+            <option value={'06'}>June</option>
+            <option value={'07'}>July</option>
+            <option value={'08'}>August</option>
+            <option value={'09'}>September</option>
+          </select>
+        </div>
       </div>
-      <div style={{flex: 1}}>
+      <div className='h-svh w-full lg:w-1/2 right-0 absolute z-10'>
         <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
           {/* Controles de órbita */}
           <OrbitControls
@@ -82,7 +86,7 @@ const EarthScene = () => {
           {/* Iluminação */}
           <ambientLight intensity={0.8} />
 
-          <Environment files="./envs/hdri_nebula.hdr" background />
+          {/* <Environment files="./envs/hdri_nebula.hdr" background /> */}
           
           {/* Planeta Terra com a textura atual */}
           <mesh position={[0, 0, 0]}>
@@ -94,11 +98,6 @@ const EarthScene = () => {
               emissiveMap={selectedTexture}       // Controla a opacidade dinâmica
               transparent={true}                  // Permite transparência para controlar visibilidade
             />
-            <Html center>
-              <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
-                Earth
-              </div>
-            </Html>
           </mesh>
 
           {/* Neon Glow em torno da Terra com emissividade */}
