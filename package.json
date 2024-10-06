@@ -13,6 +13,7 @@
     "@react-three/fiber": "^8.17.9",
     "@react-three/postprocessing": "^2.16.3",
     "@types/three": "^0.169.0",
+    "axios": "^1.7.7",
     "leva": "^0.9.35",
     "next": "14.2.14",
     "react": "^18",
