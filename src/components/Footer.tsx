@@ -1,9 +1,11 @@
 import React from 'react';
 import { Github } from './icons/Github';
+import ChatLayout from './three/Chat';
 
 const Footer = () => {
   return (
     <footer className="w-full bg-cyan-500 text-white py-4">
+      <ChatLayout />
       <div className='flex justify-between px-20'>
         <p className="text-sm">
           © {new Date().getFullYear()} Cyan Team. All Rights Reserved.

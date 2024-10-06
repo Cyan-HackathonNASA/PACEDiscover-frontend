@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+'use client';
 import api from '@/app/api';
 import Image from 'next/image';
 import React, { useState } from 'react';
