@@ -30,7 +30,7 @@ const Header = () => {
         <ul className='gap-10 hidden lg:flex'>
           {listLinks.map(link => (
             <li key={link.label}>
-              <a href={link.url} className='text-lg font-light text-white hover:text-sky-500'>
+              <a href={link.url} className='text-lg font-light text-white hover:text-cyan-500'>
                 {link.label}
               </a>
             </li>

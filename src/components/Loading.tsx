@@ -2,9 +2,20 @@ import React from 'react';
 
 const Loading = () => {
   return (
-    <div>
+    <div style={styles.wrapper}>
       <div style={styles.spinner}></div>
       <p style={styles.text}>Loading...</p>
+      <style>{`
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.5; }
+        }
+      `}</style>
     </div>
   );
 };
@@ -34,20 +45,5 @@ const styles = {
     animation: 'pulse 1.5s ease-in-out infinite',
   },
 };
-
-// Definir animações globalmente usando a tag <style>
-const styleElement = document.createElement('style');
-styleElement.innerHTML = `
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-`;
-document.head.appendChild(styleElement);
 
 export default Loading;
