@@ -2,7 +2,7 @@
 "use client";
 import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls, Html, Environment } from '@react-three/drei';
+import { OrbitControls, Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import OscillatingStars from './OscillatingStars';
@@ -80,8 +80,6 @@ const EarthScene = () => {
 
           {/* Iluminação */}
           <ambientLight intensity={0.8} />
-
-          <Environment files="./envs/hdri_nebula.hdr" background />
           
           {/* Planeta Terra com a textura atual */}
           <mesh position={[0, 0, 0]}>
