@@ -59,7 +59,6 @@ const EarthScene = () => {
         <p style={labelText}>Month:</p>
         <select onChange={(e) => setMonth(e.target.value)} style={select}>
           <option value={''}>Select</option>
-          <option value={'03'}>March</option>
           <option value={'04'}>April</option>
           <option value={'05'}>May</option>
           <option value={'06'}>June</option>
