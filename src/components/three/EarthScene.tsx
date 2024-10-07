@@ -115,7 +115,7 @@ const EarthScene = () => {
               <meshStandardMaterial
                 map={selectedTexture} // Aplica a textura selecionada dinamicamente
                 emissive={new THREE.Color(0x00b1ff)}
-                emissiveIntensity={0.9}
+                emissiveIntensity={0.2}
                 emissiveMap={selectedTexture} // Controla a opacidade dinâmica
                 transparent={true} // Permite transparência para controlar visibilidade
               />

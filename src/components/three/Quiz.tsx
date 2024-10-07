@@ -147,7 +147,9 @@ const Quiz = () => {
             <h2 style={{ color: 'white', fontSize: '22px', fontWeight: 700 }}>Quiz Finished!</h2>
             <p style={{ color: 'white', fontSize: '18px' }}>You got {score} out of {questions.length} questions correct.</p>
             <button onClick={handleRestartQuiz} style={nextButtonStyle}>Take the quiz again</button>
-            <button style={nextButtonStyle}>Explore the 3D Model</button>
+            <a href='/explorer-ocean'>
+              <button style={nextButtonStyle}>Explore the 3D Model</button>
+            </a>
           </div>
         ) : (
           <div className="quiz-container" style={quizContainerStyle}>
@@ -216,7 +218,8 @@ const nextButtonStyle = {
   color: 'white',
   border: '2px solid white',
   borderRadius: '4px',
-  marginTop: '20px'
+  marginTop: '20px',
+  marginLeft: '10px',
 };
 
 export default Quiz;
