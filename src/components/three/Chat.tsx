@@ -70,7 +70,7 @@ const ChatLayout = () => {
                   ))}
                 </div>
                 <div style={{ ...inputContainerStyle, alignSelf: 'center' }}>
-                  <input onKeyDown={(e) => e.key === 'Enter' && text.trim() !== '' && postMessage()} disabled={loading} type="text" placeholder="Ask to PACE I.A..." style={inputStyle} value={text} onChange={(e) => setText(e.target.value.trim())} />
+                  <input onKeyDown={(e) => e.key === 'Enter' && text.trim() !== '' && postMessage()} disabled={loading} type="text" placeholder="Ask to PACE I.A..." style={inputStyle} value={text} onChange={(e) => setText(e.target.value)} />
                   <button onClick={() => text.trim() !== '' && postMessage()} style={buttonStyle}>Send</button>
                 </div>
               </div>
