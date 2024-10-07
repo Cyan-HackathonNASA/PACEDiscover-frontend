@@ -1,12 +1,19 @@
 "use client";
-import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { CloseIcon } from "./icons/CloseIcon";
 import { MenuIcon } from "./icons/MenuIcon";
 
 const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    // Set to true only when the component is mounted on the client side
+    setIsClient(true);
+  }, []);
 
   const listLinks = [
     { label: 'Home', url: '/' },
@@ -19,6 +26,38 @@ const Header = () => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
+  };
+
+  const handleNavigation = (url: string) => {
+    if (!isClient) return; // Only run on the client side
+  
+    if (url.includes('#')) {
+      const [path, hash] = url.split('#');
+  
+      if (pathname === path || path === "") {
+        // If already on the target page, scroll to the hash
+        const element = document.getElementById(hash);
+        if (element) {
+          element.scrollIntoView({ behavior: "smooth" });
+        }
+      } else {
+        // Navigate to a different page, then scroll
+        router.push(path);
+        const checkElement = () => {
+          const element = document.getElementById(hash);
+          if (element) {
+            element.scrollIntoView({ behavior: "smooth" });
+          }
+        };
+        // Delay the scroll check slightly to ensure page has loaded
+        setTimeout(checkElement, 300); 
+      }
+    } else {
+      // If no hash, just navigate to the page
+      router.push(url);
+    }
+  
+    setMenuOpen(false); // Close the menu after navigating
   };
 
   return (
@@ -37,7 +76,7 @@ const Header = () => {
           {listLinks.map((link) => (
             <li key={link.label}>
               <a
-                href={link.url}
+                onClick={() => handleNavigation(link.url)}
                 className={`text-lg font-light text-white hover:text-cyan-500 transition-all ease-in-out duration-300 hover:underline ${
                   pathname === link.url ? "underline text-cyan-500" : ""
                 }`}
@@ -63,7 +102,7 @@ const Header = () => {
           {listLinks.map((link) => (
             <li key={link.label}>
               <a
-                href={link.url}
+                onClick={() => handleNavigation(link.url)}
                 className={`text-lg font-light text-white hover:text-cyan-500 ${
                   pathname === link.url ? "underline text-cyan-500" : ""
                 }`}
