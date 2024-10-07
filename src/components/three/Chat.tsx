@@ -3,7 +3,7 @@
 import api from '@/app/api';
 import Image from 'next/image';
 import React, { useState } from 'react';
-// import uuid from 'react-uuid';
+import uuid from 'react-uuid';
 
 const ChatLayout = () => {
   const [isChatModalOpen, setIsChatModalOpen] = useState(false);
@@ -20,7 +20,7 @@ const ChatLayout = () => {
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState<{text: string, isResponse: boolean}[]>([]);
   
-  // const chatId = uuid()
+  const chatId = uuid()
 
   const postMessage = async () => {
     setText('')
