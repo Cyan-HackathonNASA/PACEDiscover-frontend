@@ -31,6 +31,18 @@ section {
   @apply lg:px-40
 }
 
+label {
+  @apply text-xl
+}
+
+select {
+  @apply p-4 text-lg bg-transparent text-white border w-2/3
+}
+
+option {
+  @apply text-black
+}
+
 /* Defina o tamanho padrão para o painel Leva */
 .leva__root {
   transform: scale(2.3);
