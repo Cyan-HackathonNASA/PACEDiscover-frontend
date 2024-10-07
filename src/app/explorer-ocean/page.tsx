@@ -1,8 +1,10 @@
-import EarthScene from '@/components/three/EarthScene';
+import dynamic from 'next/dynamic';
+
+const EarthScene = dynamic(() => import('@/components/three/EarthScene'), {
+  ssr: false,
+});
 
 export default function ExplorerOcean() {
-  // Estado para controlar a renderização da cena 3D
-
   return (
     <section className="h-screen">
       <EarthScene />
