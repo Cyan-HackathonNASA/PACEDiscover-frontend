@@ -6,7 +6,7 @@ const EarthScene = dynamic(() => import('@/components/three/EarthScene'), {
 
 export default function ExplorerOcean() {
   return (
-    <section className="h-screen">
+    <section style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}} className="h-screen">
       <EarthScene />
     </section>
   );
