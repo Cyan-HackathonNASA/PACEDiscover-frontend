@@ -64,7 +64,7 @@ const ChatLayout = () => {
                   ))}
                 </div>
                 <div style={inputContainerStyle}>
-                  <input onKeyDown={(e) => e.key === 'Enter' && postMessage()} disabled={loading} type="text" placeholder="Ask to PACE I.A..." style={inputStyle} value={text} onChange={(e) => setText(e.target.value)} />
+                  <input onKeyDown={(e) => e.key === 'Enter' && text.trim() !== '' && postMessage()} disabled={loading} type="text" placeholder="Ask to PACE I.A..." style={inputStyle} value={text} onChange={(e) => setText(e.target.value.trim())} />
                   <button onClick={postMessage} style={buttonStyle}>Send</button>
                 </div>
               </div>
