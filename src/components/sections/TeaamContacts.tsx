@@ -8,31 +8,37 @@ const TeamContacts = () => {
       name: "Roberto Braga",
       github: "https://github.com/BetoBraga",
       linkedin: "https://www.linkedin.com/in/borerto/",
+      image: "/team/roberto.jpeg",
     },
     {
       name: "Ricardo Gumiero",
       github: "https://github.com/RickGusG",
-      linkedin: "https://www.linkedin.com/in/ricardogumiero"
+      linkedin: "https://www.linkedin.com/in/ricardogumiero",
+      image: "/team/ricardo.jpeg",
     },
     {
       name: "Caio Chagas",
       github: "https://github.com/caiython",
       linkedin: "https://linkedin.com/in/caiocvl",
+      image: "/team/caio.jpeg",
     },
     {
       name: "Leon Kennedy",
       github: "https://github.com/leonsk0",
       linkedin: "https://www.linkedin.com/in/leonskennedy/",
+      image: "/team/leon.png",
     },
     {
       name: "Márcio Machado",
-      github: "#",
-      linkedin: "#",
+      github: "https://github.com/marcinhojazz",
+      linkedin: "https://www.linkedin.com/in/marcio-pontes-2a2661137/",
+      image: "/team/marcio.jpeg",
     },
     {
       name: "Gustavo Valentin",
       github: "https://github.com/GustavoValentim19",
       linkedin: "https://www.linkedin.com/in/gustavo-valentim-61086b212/",
+      image: "/team/gustavo.jpeg",
     },
   ];
 
@@ -54,8 +60,10 @@ const TeamContacts = () => {
             {listTeamContacts.map((contact, index) => (
               <li key={index} className="flex justify-center">
                 <div className="bg-gray-950 border border-gray-900 rounded-lg shadow-md p-6 w-72 text-center transition-transform transform hover:scale-105">
-                  {/* Placeholder para Imagem */}
-                  <div className="bg-gray-800 w-24 h-24 mx-auto rounded-full mb-4"></div>
+                  {/* Imagem do Membro */}
+                  <div className="w-24 h-24 mx-auto rounded-full mb-4 overflow-hidden">
+                    <img src={contact.image} alt={contact.name} className="w-full h-full object-cover" />
+                  </div>
                   
                   {/* Nome do Membro */}
                   <h4 className="text-xl font-bold text-cyan-300 mb-2">{contact.name}</h4>

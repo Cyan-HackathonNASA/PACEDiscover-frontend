@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Canvas, useLoader } from '@react-three/fiber';
-import { OrbitControls, Html, Environment } from '@react-three/drei';
+import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
 import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import OscillatingStars from './OscillatingStars';
@@ -9,7 +9,7 @@ const Onboarding = () => {
   // Texturas de exemplo (textura original)
   const dayTexture = useLoader(
     THREE.TextureLoader,
-    '/earth_spec.png'
+    '/earth-default.jpg'
   );
 
   const clorofilaTexture = useLoader(
@@ -34,7 +34,7 @@ const Onboarding = () => {
   // Textura de fundo para o espaço
   const spaceTexture = useLoader(
     THREE.TextureLoader,
-    '/hdri_test.jpg'
+    '/earth_spec.png'
   );
   spaceTexture.wrapS = THREE.RepeatWrapping;
   spaceTexture.wrapT = THREE.RepeatWrapping;
@@ -180,10 +180,6 @@ const Onboarding = () => {
               opacity={selectedTextureOpacity}    // Controla a opacidade dinâmica
               transparent={true}                  // Permite transparência para controlar visibilidade
             />
-            <Html center>
-              <div style={{ color: 'white', background: 'rgba(0, 0, 0, 0.5)', padding: '2px 5px', borderRadius: '3px' }}>
-              </div>
-            </Html>
           </mesh>
 
           {/* Neon Glow em torno da Terra com emissividade */}
