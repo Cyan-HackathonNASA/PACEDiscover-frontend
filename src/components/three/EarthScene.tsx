@@ -125,12 +125,12 @@ const EarthScene = () => {
             <mesh position={[0, 0, 0]}>
               <sphereGeometry args={[1.04, 64, 64]} />
               <meshPhysicalMaterial
-                emissive={new THREE.Color(0x0099ff)}
+                emissive={new THREE.Color(0x0077FF)}
                 emissiveIntensity={4.5}
                 clearcoat={1}
                 roughness={0}
                 transparent={true}
-                opacity={0.5}
+                opacity={0.1}
                 side={THREE.BackSide}
               />
             </mesh>
