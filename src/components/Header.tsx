@@ -17,7 +17,7 @@ const Header = () => {
 
   const listLinks = [
     { label: 'Home', url: '/' },
-    { label: 'Explore', url: '/explorer-ocean' },
+    { label: 'Explore', url: '/explore' },
     { label: 'Learn about PACE', url: '/see-onboarding' },
     { label: 'Quiz PACE', url: '/quiz-pace' },
     { label: 'About the project', url: '/#about' },
@@ -112,6 +112,8 @@ const Header = () => {
             </li>
           ))}
         </ul>
+
+        <div className="lg:invisible hidden"></div>
       </nav>
     </header>
   );

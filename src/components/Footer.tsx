@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="w-full bg-cyan-500 text-white py-4">
       <ChatLayout />
-      <div className='flex justify-between px-20'>
+      <div className='flex lg:flex-row flex-col items-center gap-4 justify-between px-20'>
         <p className="text-sm">
           © {new Date().getFullYear()} Cyan Team. All Rights Reserved.
         </p>

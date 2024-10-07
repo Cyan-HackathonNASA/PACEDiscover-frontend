@@ -28,7 +28,7 @@ body {
 
 
 section {
-  @apply lg:px-40
+  @apply lg:px-40 px-8
 }
 
 label {
