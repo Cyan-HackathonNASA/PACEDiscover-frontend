@@ -9,7 +9,7 @@ const SceneOcean = () => {
     <Canvas camera={{ position: [0, 100, 300], fov: 50 }}> {/* Câmera ajustada para simular uma visão elevada */}
       <Suspense fallback={null}>
         {/* Componente de ambiente para o background */}
-        <Environment files="./envs/sky2.hdr" background />
+        <Environment files="./envs/autumn_field_puresky_1k.hdr" background />
         
         {/* Controles de órbita para navegação */}
         <OrbitControls 
