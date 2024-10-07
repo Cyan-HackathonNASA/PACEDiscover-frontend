@@ -35,7 +35,7 @@ const TeamContacts = () => {
       image: "/team/marcio.jpeg",
     },
     {
-      name: "Gustavo Valentin",
+      name: "Gustavo Valentim",
       github: "https://github.com/GustavoValentim19",
       linkedin: "https://www.linkedin.com/in/gustavo-valentim-61086b212/",
       image: "/team/gustavo.jpeg",

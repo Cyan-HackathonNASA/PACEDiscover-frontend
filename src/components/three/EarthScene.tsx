@@ -8,6 +8,7 @@ import { EffectComposer, Bloom } from '@react-three/postprocessing';
 import OscillatingStars from './OscillatingStars';
 import api from '@/app/api';
 import Select from 'react-select';
+import Loading from '../Loading';
 
 const EarthScene = () => {
   const defaultTexture = useLoader(THREE.TextureLoader, '/earth-default.jpg');
@@ -17,6 +18,7 @@ const EarthScene = () => {
   const [selectedProduct, setSelectedProduct] = useState<string | undefined>();
   const [month, setMonth] = useState<string | undefined>();
   const [selectedTexture, setSelectedTexture] = useState(defaultTexture);
+  const [loading, setLoading] = useState(false);
 
   const getProducts = async () => {
     const { data } = await api.get('/product/');
@@ -29,13 +31,20 @@ const EarthScene = () => {
 
   useEffect(() => {
     const getTexture = async () => {
-      const { data } = await api.get(
-        `/image/?product=${selectedProduct}&year=2024&month=${month}&res=4km&period=monthly`
-      );
-      const loader = new THREE.TextureLoader();
-      loader.load(`data:image/png;base64, ${data.image_base64}`, (texture: any) => {
-        setSelectedTexture(texture);
-      });
+      setLoading(true);
+      try {
+        const { data } = await api.get(
+          `/image/?product=${selectedProduct}&year=2024&month=${month}&res=4km&period=monthly`
+        );
+        const loader = new THREE.TextureLoader();
+        loader.load(`data:image/png;base64, ${data.image_base64}`, (texture: any) => {
+          setSelectedTexture(texture);
+        });
+        setLoading(false);
+      } catch {
+        setLoading(false);
+        throw new Error('Error, try again.');
+      }    
     };
     if (selectedProduct && month) {
       getTexture();
@@ -84,63 +93,67 @@ const EarthScene = () => {
         />
       </div>
       <div style={{ flex: 1 }}>
-        <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
-          {/* Controles de órbita */}
-          <OrbitControls
-            enableZoom={true}
-            enablePan={false}
-            zoomSpeed={0.5}
-            minDistance={1.5} // Limite mínimo de zoom (aproximação)
-            maxDistance={6.0}
-          />
-
-          {/* Iluminação */}
-          <ambientLight intensity={0.8} />
-
-          {/* Planeta Terra com a textura atual */}
-          <mesh position={[0, 0, 0]}>
-            <sphereGeometry args={[1, 64, 64]} />
-            <meshStandardMaterial
-              map={selectedTexture} // Aplica a textura selecionada dinamicamente
-              emissive={new THREE.Color(0x00b1ff)}
-              emissiveIntensity={0.9}
-              emissiveMap={selectedTexture} // Controla a opacidade dinâmica
-              transparent={true} // Permite transparência para controlar visibilidade
+        {loading ? (
+          <Loading />
+        ) : (
+          <Canvas camera={{ position: [0, 0, 6], fov: 50 }}>
+            {/* Controles de órbita */}
+            <OrbitControls
+              enableZoom={true}
+              enablePan={false}
+              zoomSpeed={0.5}
+              minDistance={1.5} // Limite mínimo de zoom (aproximação)
+              maxDistance={6.0}
             />
-          </mesh>
 
-          {/* Neon Glow em torno da Terra com emissividade */}
-          <mesh position={[0, 0, 0]}>
-            <sphereGeometry args={[1.04, 64, 64]} />
-            <meshPhysicalMaterial
-              emissive={new THREE.Color(0x0099ff)}
-              emissiveIntensity={4.5}
-              clearcoat={1}
-              roughness={0}
-              transparent={true}
-              opacity={0.5}
-              side={THREE.BackSide}
-            />
-          </mesh>
+            {/* Iluminação */}
+            <ambientLight intensity={0.8} />
 
-          {/* Componente de Estrelas Oscilantes */}
-          <OscillatingStars />
+            {/* Planeta Terra com a textura atual */}
+            <mesh position={[0, 0, 0]}>
+              <sphereGeometry args={[1, 64, 64]} />
+              <meshStandardMaterial
+                map={selectedTexture} // Aplica a textura selecionada dinamicamente
+                emissive={new THREE.Color(0x00b1ff)}
+                emissiveIntensity={0.9}
+                emissiveMap={selectedTexture} // Controla a opacidade dinâmica
+                transparent={true} // Permite transparência para controlar visibilidade
+              />
+            </mesh>
 
-          {/* Background manual com textura repetida */}
-          <mesh>
-            <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
-          </mesh>
+            {/* Neon Glow em torno da Terra com emissividade */}
+            <mesh position={[0, 0, 0]}>
+              <sphereGeometry args={[1.04, 64, 64]} />
+              <meshPhysicalMaterial
+                emissive={new THREE.Color(0x0099ff)}
+                emissiveIntensity={4.5}
+                clearcoat={1}
+                roughness={0}
+                transparent={true}
+                opacity={0.5}
+                side={THREE.BackSide}
+              />
+            </mesh>
 
-          {/* Efeito de pós-processamento para brilho */}
-          <EffectComposer>
-            <Bloom
-              intensity={3}
-              luminanceThreshold={0.1}
-              luminanceSmoothing={0.9}
-              radius={1}
-            />
-          </EffectComposer>
-        </Canvas>
+            {/* Componente de Estrelas Oscilantes */}
+            <OscillatingStars />
+
+            {/* Background manual com textura repetida */}
+            <mesh>
+              <meshBasicMaterial map={spaceTexture} side={THREE.BackSide} />
+            </mesh>
+
+            {/* Efeito de pós-processamento para brilho */}
+            <EffectComposer>
+              <Bloom
+                intensity={3}
+                luminanceThreshold={0.1}
+                luminanceSmoothing={0.9}
+                radius={1}
+              />
+            </EffectComposer>
+          </Canvas>
+        )}
       </div>
     </div>
   );
